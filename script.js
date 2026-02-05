@@ -1726,7 +1726,7 @@
 [spoiler="Atividade"]${bbcodeInput}[/spoiler][/font]`;
 
             try {
-                await postToForumTopic(1, message);
+                await postToForumTopic(38888, message);
                 addToast('success', 'Sucesso', 'Postagem realizada com sucesso!');
             } catch (e) {
                 console.error(e);
