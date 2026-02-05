@@ -43,6 +43,10 @@
       const CustomHistoryIcon = ({ size = 24, className = "" }) => (
         <img src="https://i.imgur.com/crHNfQF.png" alt="Histórico" style={{ width: size, height: size, objectFit: 'contain' }} className={className} />
       );
+
+      const CustomHTrophyIcon = ({ size = 24, className = "" }) => (
+        <img src="https://i.imgur.com/CixKK4I.png" alt="Histórico" style={{ width: size, height: size, objectFit: 'contain' }} className={className} />
+      );
       
       const CustomCorrectionIcon = ({ size = 24, className = "" }) => (
         <img src="https://i.imgur.com/SgjBp7C.png" alt="Correção" style={{ width: size, height: size, objectFit: 'contain' }} className={className} />
@@ -1471,7 +1475,7 @@
                         onClick={() => setViewMode(prev => prev === 'history' ? 'ranking' : 'history')}
                         className={`flex items-center gap-2 px-4 py-2 border rounded-sm text-xs font-bold uppercase tracking-wide transition-colors ${viewMode === 'history' ? 'bg-brand text-white border-brand hover:bg-brand-hover' : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-700 dark:text-white hover:bg-slate-50'}`}
                      >
-                        {viewMode === 'history' ? <><Trophy size={16} /> Ver Ranking</> : <><CustomHistoryIcon size={16} /> Ver Histórico</>}
+                        {viewMode === 'history' ? <><CustomHTrophyIcon size={16} /> Ver Ranking</> : <><CustomHistoryIcon size={16} /> Ver Histórico</>}
                      </button>
                 </div>
             </div>
@@ -1895,7 +1899,7 @@
       const MENU_ITEMS = [
         { id: 'classes', label: 'Aulas e Scripts', icon: CustomCourseIcon }, 
         { id: 'reports', label: 'Formulário de Postagem', icon: CustomReportIcon },
-        { id: 'history', label: 'Relatórios de Aulas', icon: CustomHistoryIcon },
+        { id: 'history', label: 'Relatório de Aulas', icon: CustomHistoryIcon },
         { id: 'correction', label: 'Ferramenta de Correção', icon: CustomCorrectionIcon },
         { id: 'manual_prof', label: 'Manual do Professor', icon: CustomProfessorIcon }, 
       ];
