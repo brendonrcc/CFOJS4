@@ -778,7 +778,6 @@
         const [progressText, setProgressText] = useState('Enviar'); 
         const [sentRecipient, setSentRecipient] = useState(null);
 
-        // AUMENTADO PARA 6 SEGUNDOS PARA EVITAR ERRO DE FLOOD NO FÓRUM
         const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         const handleSend = async () => { 
@@ -799,8 +798,7 @@
             for (let i = 0; i < recipients.length; i++) {
                 const recipient = recipients[i];
                 
-                // Mostra quem está sendo processado no momento
-                setProgressText(`(${i + 1}/${recipients.length}) ${recipient}...`);
+                setProgressText(`(${i + 1}/${recipients.length}) Enviando para ${recipient}...`);
 
                 try {
                     const success = await sendPrivateMessage(recipient, subject, rawMessage);
@@ -810,17 +808,16 @@
                     } else {
                         failCount++;
                         failedNicks.push(recipient);
-                        console.warn(`Falha ao enviar para ${recipient}. Possível Flood ou Usuário inexistente.`);
+                        console.warn(`Falha ao enviar para ${recipient}.`);
                     }
                 } catch (error) {
                     failCount++;
                     failedNicks.push(recipient);
                 }
 
-                // DELAY DE SEGURANÇA: Se não for o último, espera 6 segundos
+                // DELAY AUMENTADO PARA 10 SEGUNDOS
                 if (i < recipients.length - 1) {
-                    // Contagem regressiva no botão para o usuário saber que está esperando o flood
-                    for(let s = 6; s > 0; s--) {
+                    for(let s = 10; s > 0; s--) {
                         setProgressText(`Aguardando anti-spam... ${s}s`);
                         await delay(1000);
                     }
@@ -834,7 +831,7 @@
                 setProgressText('Concluído');
 
                 if (failCount > 0) {
-                    alert(`Enviado para: ${successCount}.\nFalha ao enviar para: ${failedNicks.join(', ')}.\n(Provavelmente erro de Flood ou Nick incorreto).`);
+                    alert(`Enviado para: ${successCount}.\nFalha ao enviar para: ${failedNicks.join(', ')}.`);
                 }
 
                 setTimeout(() => { 
@@ -1696,7 +1693,7 @@
         
         const handleMpSend = async (isApproval) => {
              if (!studentNick.trim()) {
-                 addToast('error', 'Erro', 'Informe os nicknames separados por /');
+                 addToast('error', 'Erro', 'Informe o nickname.');
                  return;
              }
              
@@ -1708,7 +1705,6 @@
              let failCount = 0;
              let failedNicks = [];
              
-             // Função Delay Interna
              const delay = (ms) => new Promise(r => setTimeout(r, ms));
 
              try {
@@ -1738,7 +1734,7 @@
                  
                  for (let i = 0; i < recipients.length; i++) {
                      const recipient = recipients[i];
-                     setMpButtonLabel(`(${i + 1}/${recipients.length}) ${recipient}`);
+                     setMpButtonLabel(`(${i + 1}/${recipients.length}) Enviando...`);
                      
                      try {
                          const success = await sendPrivateMessage(recipient, subject, messageBody);
@@ -1748,7 +1744,13 @@
                          failCount++; failedNicks.push(recipient);
                      }
 
-                     if (i < recipients.length - 1) await delay(3000); 
+                     // DELAY DE 10 SEGUNDOS COM CONTAGEM
+                     if (i < recipients.length - 1) {
+                         for(let s = 10; s > 0; s--) {
+                             setMpButtonLabel(`Aguardando... ${s}s`);
+                             await delay(1000);
+                         }
+                     }
                  }
                  
                  if (successCount > 0) {
